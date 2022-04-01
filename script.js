@@ -9,17 +9,15 @@ function getRequest() {
       console.log(data.foods[0].foodNutrients);
       var foodNutrients = data.foods[0].foodNutrients;
 
-      var calories = foodNutrients.find(function (nutrient){
-       // console.log(nutrient.nutrientName);
-    //    return nutrient.nutrientName==="Energy";
-        if (nutrient.nutrientName==="Energy"){
-            return true
-        }else{
-            return false
+      var calories = foodNutrients.find(function (nutrient) {
+        // console.log(nutrient.nutrientName);
+        //    return nutrient.nutrientName==="Energy";
+        if (nutrient.nutrientName === "Energy") {
+          return true;
+        } else {
+          return false;
         }
-
-
-      })
+      });
 
       console.log(calories.value);
     });
