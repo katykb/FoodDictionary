@@ -24,4 +24,4 @@ function getRequest() {
       console.log(calories.value);
     });
 }
-getRequest();
+getRequest(); 
