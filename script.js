@@ -5,5 +5,7 @@ function getRequest() {
       fetch(requestUrl)
         .then((response) => response.json())
         .then((data) => console.log(data));
+        console.log(data.foodNutrients[8]);
+        for
     };
 getRequest();
