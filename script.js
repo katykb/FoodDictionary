@@ -1,40 +1,24 @@
+var foodName = document.getElementById("search");
+var searchBtn = document.getElementById("foodSearchButton");
+
+searchBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    getNutrients(foodName.value);
+});
+
 function getRecipe(foodName) {
     var recipeRequestUrl =
         "https://api.edamam.com/api/recipes/v2?type=public&q=" +
         foodName +
         "&app_id=61881171&app_key=cf039096837f9493c42a82711335486d";
-
-<<<<<<< HEAD
-var recipeRequestUrl =
-  "https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=61881171&app_key=cf039096837f9493c42a82711335486d";
-
-var foodName = document.getElementById("foodSearchButton");
-var searchBtn = document.getElementById("search");
-
-
-searchBtn.addEventListener("click", function(event){
-    event.preventDefault();
-    console.log(foodName.value);
-   })
-
-
-function getRecipe() {
-  fetch(recipeRequestUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-    });
-=======
     fetch(recipeRequestUrl)
         .then((response) => response.json())
         .then((data) => {
             console.log(data);
         });
->>>>>>> 0f14a2b2c25eeee587200df7a7ff3803ed6a32fe
 }
-getRecipe("Chicken");
 
-function getRequest(foodName) {
+function getNutrients(foodName) {
     var requestUrl =
         "https://api.nal.usda.gov/fdc/v1/foods/search?query=" +
         foodName +
@@ -90,4 +74,3 @@ function getRequest(foodName) {
             console.log(protein.value + " " + protein.unitName);
         });
 }
-getRequest("chicken");
