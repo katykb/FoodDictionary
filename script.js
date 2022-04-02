@@ -1,42 +1,37 @@
-var requestUrl =
-  "https://api.nal.usda.gov/fdc/v1/foods/search?query=beef&pageSize=2&api_key=vuZ8WUcvpMr1mNoGUwWsyX4AWHv3LLaeRcZpDoga";
+function getRecipe(foodName) {
+    var recipeRequestUrl =
+        "https://api.edamam.com/api/recipes/v2?type=public&q=" +
+        foodName +
+        "&app_id=61881171&app_key=cf039096837f9493c42a82711335486d";
 
-var recipeRequestUrl =
-  "https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=61881171&app_key=cf039096837f9493c42a82711335486d";
-
-function getRecipe() {
-  fetch(recipeRequestUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-    });
+    fetch(recipeRequestUrl)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+        });
 }
-getRecipe();
+getRecipe("Chicken");
 
-function getRequest() {
-  fetch(requestUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      console.log(data.foods[0].foodNutrients);
-      var foodNutrients = data.foods[0].foodNutrients;
+function getRequest(foodName) {
+    var requestUrl =
+        "https://api.nal.usda.gov/fdc/v1/foods/search?query=" +
+        foodName +
+        "&pageSize=2&api_key=vuZ8WUcvpMr1mNoGUwWsyX4AWHv3LLaeRcZpDoga";
 
-      //can we consolidate this in any way?
-      var sugar = foodNutrients.find(function (nutrient) {
-        if (nutrient.nutrientName === "Sugars, total including NLEA") {
-          return true;
-        } else {
-          return false;
-        }
-      });
+    fetch(requestUrl)
+        .then((response) => response.json())
+        .then((data) => {
+            console.log(data);
+            console.log(data.foods[0].foodNutrients);
+            var foodNutrients = data.foods[0].foodNutrients;
 
-      var carb = foodNutrients.find(function (nutrient) {
-        if (nutrient.nutrientName === "Carbohydrate, by difference") {
-          return true;
-        } else {
-          return false;
-        }
-      });
+            var sugar = foodNutrients.find(function(nutrient) {
+                if (nutrient.nutrientName === "Sugars, total including NLEA") {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
 
             var calories = foodNutrients.find(function(nutrient) {
                 // console.log(nutrient.nutrientName);
@@ -48,18 +43,29 @@ function getRequest() {
                 }
             });
 
-      var fat= foodNutrients.find(function(nutrient) {
-          if (nutrient.nutrientName === "Total lipid (fat)"){
-              return true;
-          }else{
-              return false;
-          }
-      })
+            var carb = foodNutrients.find(function(nutrient) {
+                if (nutrient.nutrientName === "Carbohydrate, by difference") {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
 
-      console.log(calories.value);
-      console.log(sugar.value);
-      console.log(carb.value);
-      console.log(fat.value);
-    });
+            var fat = foodNutrients.find(function(nutrient) {
+                if (nutrient.nutrientName === "Total lipid (fat)") {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
+
+            var protein = foodNutrients.find(function(nutrient) {
+                return nutrient.nutrientName === "Protein"; //same as above just written different.
+            });
+
+            console.log(calories.value + " " + calories.unitName);
+            console.log(sugar.value);
+            console.log(protein.value + " " + protein.unitName);
+        });
 }
 getRequest("chicken");
