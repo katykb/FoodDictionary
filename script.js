@@ -38,15 +38,15 @@ function getRequest() {
         }
       });
 
-      var calories = foodNutrients.find(function (nutrient) {
-        // console.log(nutrient.nutrientName);
-        //    return nutrient.nutrientName==="Energy";
-        if (nutrient.nutrientName === "Energy") {
-          return true;
-        } else {
-          return false;
-        }
-      });
+            var calories = foodNutrients.find(function(nutrient) {
+                // console.log(nutrient.nutrientName);
+                //    return nutrient.nutrientName==="Energy";
+                if (nutrient.nutrientName === "Energy") {
+                    return true;
+                } else {
+                    return false;
+                }
+            });
 
       var fat= foodNutrients.find(function(nutrient) {
           if (nutrient.nutrientName === "Total lipid (fat)"){
@@ -62,4 +62,4 @@ function getRequest() {
       console.log(fat.value);
     });
 }
-getRequest();
+getRequest("chicken");
