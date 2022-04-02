@@ -4,6 +4,16 @@ var requestUrl =
 var recipeRequestUrl =
   "https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=61881171&app_key=cf039096837f9493c42a82711335486d";
 
+var foodName = document.getElementById("foodSearchButton");
+var searchBtn = document.getElementById("search");
+
+
+searchBtn.addEventListener("click", function(event){
+    event.preventDefault();
+    console.log(foodName.value);
+   })
+
+
 function getRecipe() {
   fetch(recipeRequestUrl)
     .then((response) => response.json())
