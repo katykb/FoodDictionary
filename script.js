@@ -4,7 +4,7 @@ var searchBtn = document.getElementById("foodSearchButton");
 var foodData = {
   foodName: " ",
   foodFat: " ",
-  foodCard: " ",
+  foodCarb: " ",
   foodSugar: " ",
 };
 
@@ -32,7 +32,7 @@ function getRecipe(foodName) {
       //   var recipe = data.hits[""].recipe
       for (let i = 0; i < 5; i++) {
         let recipe = data.hits[i].recipe;
-        let name = recipe.label;
+        let recipeName = recipe.label;
         let url = recipe.url;
         let image = recipe.images.REGULAR.url;
         let ingredients = "<ul>";
@@ -48,11 +48,11 @@ function getRecipe(foodName) {
             <div class="card">
               <div class="card-image">
                 <img src="${image}">
-                <span class="card-title">${name}</span>
+                <span class="card-title">${recipeName}</span>
               </div>
               <div class="card-content">
                 <p>${ingredients}</p>
-                <button>Save Recipe</button>
+                <button data-reci=" {name:${recipeName},image:${image},ingredients:${ingredients}, url:${url}}" class="favoriteRecipe">Save Recipe</button>
               </div>
               <div class="card-action">
                 <a href="${url}">Go to Recipe</a>
@@ -66,14 +66,38 @@ function getRecipe(foodName) {
       document.querySelector(".containerRecipes").innerHTML = html;
       let buttons = document.querySelectorAll(".containerRecipes button");
       for (let button of buttons) {
-        button.addEventListener("click", saveRecipe);
+        button.addEventListener("click", setRecipeStorage);
       }
     });
 }
-function saveRecipe(event) {
+function setRecipeStorage(event) {
   let card = event.target.closest(".row");
   console.log(card);
+  localStorage.setItem("recipeName", JSON.stringify(card));
 }
+
+// document.querySelector(".containerRecipes").addEventListener("click", saveFavoriteRecipe);
+
+// function saveRecipe(event){
+//   console.log(event, event.target.tagName)
+
+//   if (event.target.tagName==="BUTTON"){
+//     let element = event.target
+//     // console.log(Element);
+//     let saved = JSON.parse(localStorage.getItem("recipeName")) || []
+//     let rec = event.target.getAttribute("data-reci")
+//     saved.push(rec)
+//     localStorage.setItem("recipeName", JSON.stringify(saved));
+//     console.log(rec)
+//       let myRecipe = {
+
+//         //    image: element.closest("img").getAttribute("src"),
+//             ingredients: element.previousSibling.innerText ,
+//             // url: element.closest("a").getAttribute("href")
+//               }
+//               console.log(myRecipe);
+//   }
+// }
 
 function getNutrients(foodName) {
   var requestUrl =
@@ -130,12 +154,13 @@ function getNutrients(foodName) {
       console.log(sugar.value);
       console.log(protein.value + " " + protein.unitName);
 
-      //   function setLocalStorage() {
-      //     localStorage.setItem("foodName", json.stringify(foodData));
-      //     console.log(foodData)
-      //   }
+      function setFoodItemStorage(event) {
+        localStorage.setItem("foodName", JSON.stringify(foodData));
+        console.log(foodData);
+      }
 
       getRecipe(foodName);
-      //   setLocalStorage();
+      setFoodItemStorage();
+      setRecipeStorage();
     });
 }
