@@ -1,86 +1,141 @@
+var foodName = document.getElementById("search");
+var searchBtn = document.getElementById("foodSearchButton");
 
+var foodData = {
+  foodName: " ",
+  foodFat: " ",
+  foodCard: " ",
+  foodSugar: " ",
+};
 
-var recipeRequestUrl =
-  "https://api.edamam.com/api/recipes/v2?type=public&q=chicken&app_id=61881171&app_key=cf039096837f9493c42a82711335486d";
+searchBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  console.log(foodName.value);
+  getNutrients(foodName.value);
+});
 
-  var foodName = document.getElementById("search")
-  var searchBtn = document.getElementById("foodSearchButton");
-
-
-searchBtn.addEventListener("click", function(event){
-    event.preventDefault();
-    console.log(foodName.value);
-    getNutrients(foodName.value);
-   })
-
-
-   function getRecipe(foodName) {
-    var recipeRequestUrl =
-        "https://api.edamam.com/api/recipes/v2?type=public&q=" +
-        foodName +
-        "&app_id=61881171&app_key=cf039096837f9493c42a82711335486d";
+function getRecipe(foodName) {
+  var recipeRequestUrl =
+    "https://api.edamam.com/api/recipes/v2?type=public&q=" +
+    foodName +
+    "&app_id=61881171&app_key=cf039096837f9493c42a82711335486d";
   fetch(recipeRequestUrl)
     .then((response) => response.json())
     .then((data) => {
-      console.log(data);
+      // The inner html variables.
+      let html = "";
+      //   console.log(data);
+      //   console.log(data.hits);
+      //   console.log(data.hits[0].recipe.calories)
+      //   console.log(data.hits[0].recipe.images.THUMBNAIL)
+      //   console.log(data.hits[0].recipe.ingredients[0])
+      //   var recipe = data.hits[""].recipe
+      for (let i = 0; i < 5; i++) {
+        let recipe = data.hits[i].recipe;
+        let name = recipe.label;
+        let url = recipe.url;
+        let image = recipe.images.REGULAR.url;
+        let ingredients = "<ul>";
+
+        //   code that sets the recipe cards
+        for (let j = 0; j < recipe.ingredients.length; j++) {
+          ingredients += `<li>${recipe.ingredients[j].text}</li>`;
+        }
+        ingredients += "</ul>";
+        console.log(recipe);
+        html += ` <div class="row">
+          <div class="col s12 m7">
+            <div class="card">
+              <div class="card-image">
+                <img src="${image}">
+                <span class="card-title">${name}</span>
+              </div>
+              <div class="card-content">
+                <p>${ingredients}</p>
+                <button>Save Recipe</button>
+              </div>
+              <div class="card-action">
+                <a href="${url}">Go to Recipe</a>
+              </div>
+            </div>
+          </div>
+        </div>
+                  `;
+      }
+
+      document.querySelector(".containerRecipes").innerHTML = html;
+      let buttons = document.querySelectorAll(".containerRecipes button");
+      for (let button of buttons) {
+        button.addEventListener("click", saveRecipe);
+      }
     });
 }
-getRecipe("Chicken");
-
-function getNutrients(foodName) {
-    var requestUrl =
-        "https://api.nal.usda.gov/fdc/v1/foods/search?query=" +
-        foodName +
-        "&pageSize=2&api_key=vuZ8WUcvpMr1mNoGUwWsyX4AWHv3LLaeRcZpDoga";
-
-    fetch(requestUrl)
-        .then((response) => response.json())
-        .then((data) => {
-            console.log(data);
-            console.log(data.foods[0].foodNutrients);
-            var foodNutrients = data.foods[0].foodNutrients;
-
-            var sugar = foodNutrients.find(function(nutrient) {
-                if (nutrient.nutrientName === "Sugars, total including NLEA") {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-
-            var calories = foodNutrients.find(function(nutrient) {
-                // console.log(nutrient.nutrientName);
-                //    return nutrient.nutrientName==="Energy";
-                if (nutrient.nutrientName === "Energy") {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-
-            var carb = foodNutrients.find(function(nutrient) {
-                if (nutrient.nutrientName === "Carbohydrate, by difference") {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-
-            var fat = foodNutrients.find(function(nutrient) {
-                if (nutrient.nutrientName === "Total lipid (fat)") {
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-
-            var protein = foodNutrients.find(function(nutrient) {
-                return nutrient.nutrientName === "Protein"; //same as above just written different.
-            });
-
-            console.log(calories.value + " " + calories.unitName);
-            console.log(sugar.value);
-            console.log(protein.value + " " + protein.unitName);
-        });
+function saveRecipe(event) {
+  let card = event.target.closest(".row");
+  console.log(card);
 }
 
+function getNutrients(foodName) {
+  var requestUrl =
+    "https://api.nal.usda.gov/fdc/v1/foods/search?query=" +
+    foodName +
+    "&pageSize=2&api_key=vuZ8WUcvpMr1mNoGUwWsyX4AWHv3LLaeRcZpDoga";
+
+  fetch(requestUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      console.log(data.foods[0].foodNutrients);
+      var foodNutrients = data.foods[0].foodNutrients;
+
+      var sugar = foodNutrients.find(function (nutrient) {
+        if (nutrient.nutrientName === "Sugars, total including NLEA") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      var calories = foodNutrients.find(function (nutrient) {
+        // console.log(nutrient.nutrientName);
+        //    return nutrient.nutrientName==="Energy";
+        if (nutrient.nutrientName === "Energy") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      var carb = foodNutrients.find(function (nutrient) {
+        if (nutrient.nutrientName === "Carbohydrate, by difference") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      var fat = foodNutrients.find(function (nutrient) {
+        if (nutrient.nutrientName === "Total lipid (fat)") {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      var protein = foodNutrients.find(function (nutrient) {
+        return nutrient.nutrientName === "Protein"; //same as above just written different.
+      });
+
+      console.log(calories.value + " " + calories.unitName);
+      console.log(sugar.value);
+      console.log(protein.value + " " + protein.unitName);
+
+      //   function setLocalStorage() {
+      //     localStorage.setItem("foodName", json.stringify(foodData));
+      //     console.log(foodData)
+      //   }
+
+      getRecipe(foodName);
+      //   setLocalStorage();
+    });
+}
