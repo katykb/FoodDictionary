@@ -44,7 +44,7 @@ function getRecipe(foodName) {
         ingredients += "</ul>";
         console.log(recipe);
         html += ` <div class="row">
-          <div class="col s12 m7">
+          <div class="col s12 m4">
             <div class="card">
               <div class="card-image">
                 <img src="${image}">
