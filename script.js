@@ -1,17 +1,31 @@
 var foodName = document.getElementById("search");
 var searchBtn = document.getElementById("foodSearchButton");
 
-var foodData = {
-  foodName: " ",
-  foodFat: " ",
-  foodCarb: " ",
-  foodSugar: " ",
-};
+let storedFoodArray = [];
 
-searchBtn.addEventListener("click", function (event) {
-  event.preventDefault();
-  console.log(foodName.value);
-  getNutrients(foodName.value);
+if (localStorage.getItem("storedItems")) {
+    storedFoodArray = JSON.parse(localStorage.getItem("storedItems"));
+}
+
+searchBtn.addEventListener("click", function(event) {
+    event.preventDefault();
+    getNutrients(foodName.value);
+    getRecipe(foodName.value);
+
+    var date = new Date(Date.now());
+    var dateString = new Intl.DateTimeFormat("default", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "2-digit",
+    }).format(date);
+
+    var storedItem = {
+        food: foodName.value,
+        date: date,
+        dateString: dateString,
+    };
+    storedFoodArray.push(storedItem);
+    localStorage.setItem("storedItems", JSON.stringify(storedFoodArray));
 });
 
 function getRecipe(foodName) {
@@ -148,9 +162,11 @@ function getNutrients(foodName) {
 
       var protein = foodNutrients.find(function (nutrient) {
         return nutrient.nutrientName === "Protein"; //same as above just written different.
-      });
-
-      console.log(calories.value + " " + calories.unitName);
+    });
+    
+    displayNutrients(carb, protein, fat, sugar, calories);
+      
+    console.log(calories.value + " " + calories.unitName);
       console.log(sugar.value);
       console.log(protein.value + " " + protein.unitName);
 
@@ -159,6 +175,16 @@ function getNutrients(foodName) {
         console.log(foodData);
       }
 
+      function displayNutrients(carb, protein, fat, sugar, calories) {
+        document.querySelector(
+            ".test"
+        ).innerHTML = `<p>Calories.....${calories.value} ${calories.unitName}</p>
+            <p>Protein.....${protein.value} ${protein.unitName}</p>
+            <p>Fat.....${fat.value} ${fat.unitName}</p>
+            <p>sugar.....${sugar.value} ${sugar.unitName}</p>
+            <p>carb.....${carb.value} ${carb.unitName}</p>`;
+    }
+    
       getRecipe(foodName);
       setFoodItemStorage();
       setRecipeStorage();
