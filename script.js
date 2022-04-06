@@ -4,28 +4,28 @@ var searchBtn = document.getElementById("foodSearchButton");
 let storedFoodArray = [];
 
 if (localStorage.getItem("storedItems")) {
-    storedFoodArray = JSON.parse(localStorage.getItem("storedItems"));
+  storedFoodArray = JSON.parse(localStorage.getItem("storedItems"));
 }
 
-searchBtn.addEventListener("click", function(event) {
-    event.preventDefault();
-    getNutrients(foodName.value);
-    getRecipe(foodName.value);
+searchBtn.addEventListener("click", function (event) {
+  event.preventDefault();
+  getNutrients(foodName.value);
+  getRecipe(foodName.value);
 
-    var date = new Date(Date.now());
-    var dateString = new Intl.DateTimeFormat("default", {
-        month: "2-digit",
-        day: "2-digit",
-        year: "2-digit",
-    }).format(date);
+  var date = new Date(Date.now());
+  var dateString = new Intl.DateTimeFormat("default", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "2-digit",
+  }).format(date);
 
-    var storedItem = {
-        food: foodName.value,
-        date: date,
-        dateString: dateString,
-    };
-    storedFoodArray.push(storedItem);
-    localStorage.setItem("storedItems", JSON.stringify(storedFoodArray));
+  var storedItem = {
+    food: foodName.value,
+    date: date,
+    dateString: dateString,
+  };
+  storedFoodArray.push(storedItem);
+  localStorage.setItem("storedItems", JSON.stringify(storedFoodArray));
 });
 
 function getRecipe(foodName) {
@@ -66,7 +66,7 @@ function getRecipe(foodName) {
               </div>
               <div class="card-content">
                 <p>${ingredients}</p>
-                <button data-reci=" {name:${recipeName},image:${image},ingredients:${ingredients}, url:${url}}" class="favoriteRecipe">Save Recipe</button>
+                <button data-reci="${i}" class="favoriteRecipe">Save Recipe</button>
               </div>
               <div class="card-action">
                 <a href="${url}">Go to Recipe</a>
@@ -80,14 +80,13 @@ function getRecipe(foodName) {
       document.querySelector(".containerRecipes").innerHTML = html;
       let buttons = document.querySelectorAll(".containerRecipes button");
       for (let button of buttons) {
-        button.addEventListener("click", setRecipeStorage);
+        button.addEventListener("click", function (event) {
+          let recipeIndex = event.target.dataset.reci;
+          let recipeData = data.hits[recipeIndex].recipe;
+          console.log(recipeData);
+        });
       }
     });
-}
-function setRecipeStorage(event) {
-  let card = event.target.closest(".row");
-  console.log(card);
-  localStorage.setItem("recipeName", JSON.stringify(card));
 }
 
 // document.querySelector(".containerRecipes").addEventListener("click", saveFavoriteRecipe);
@@ -162,31 +161,31 @@ function getNutrients(foodName) {
 
       var protein = foodNutrients.find(function (nutrient) {
         return nutrient.nutrientName === "Protein"; //same as above just written different.
-    });
-    
-    displayNutrients(carb, protein, fat, sugar, calories);
-      
-    console.log(calories.value + " " + calories.unitName);
+      });
+
+      displayNutrients(carb, protein, fat, sugar, calories);
+
+      console.log(calories.value + " " + calories.unitName);
       console.log(sugar.value);
       console.log(protein.value + " " + protein.unitName);
 
-      function setFoodItemStorage(event) {
-        localStorage.setItem("foodName", JSON.stringify(foodData));
-        console.log(foodData);
-      }
+      //   function setFoodItemStorage(event) {
+      //     localStorage.setItem("foodName", JSON.stringify(foodData));
+      //     console.log(foodData);
+      //   }
 
       function displayNutrients(carb, protein, fat, sugar, calories) {
         document.querySelector(
-            ".test"
+          ".test"
         ).innerHTML = `<p>Calories.....${calories.value} ${calories.unitName}</p>
             <p>Protein.....${protein.value} ${protein.unitName}</p>
             <p>Fat.....${fat.value} ${fat.unitName}</p>
             <p>sugar.....${sugar.value} ${sugar.unitName}</p>
             <p>carb.....${carb.value} ${carb.unitName}</p>`;
-    }
-    
+      }
+
       getRecipe(foodName);
-      setFoodItemStorage();
-      setRecipeStorage();
+      //   setFoodItemStorage();
+      //   setRecipeStorage();
     });
 }
