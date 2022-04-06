@@ -1,17 +1,31 @@
 var foodName = document.getElementById("search");
 var searchBtn = document.getElementById("foodSearchButton");
 
-var foodData = {
-  foodName: " ",
-  foodFat: " ",
-  foodCard: " ",
-  foodSugar: " ",
-};
+let storedFoodArray = [];
+
+if (localStorage.getItem("storedItems")) {
+  storedFoodArray = JSON.parse(localStorage.getItem("storedItems"));
+}
 
 searchBtn.addEventListener("click", function (event) {
   event.preventDefault();
-  console.log(foodName.value);
   getNutrients(foodName.value);
+  getRecipe(foodName.value);
+
+  var date = new Date(Date.now());
+  var dateString = new Intl.DateTimeFormat("default", {
+    month: "2-digit",
+    day: "2-digit",
+    year: "2-digit",
+  }).format(date);
+
+  var storedItem = {
+    food: foodName.value,
+    date: date,
+    dateString: dateString,
+  };
+  storedFoodArray.push(storedItem);
+  localStorage.setItem("storedItems", JSON.stringify(storedFoodArray));
 });
 
 function getRecipe(foodName) {
@@ -32,7 +46,7 @@ function getRecipe(foodName) {
       //   var recipe = data.hits[""].recipe
       for (let i = 0; i < 5; i++) {
         let recipe = data.hits[i].recipe;
-        let name = recipe.label;
+        let recipeName = recipe.label;
         let url = recipe.url;
         let image = recipe.images.REGULAR.url;
         let ingredients = "<ul>";
@@ -44,15 +58,15 @@ function getRecipe(foodName) {
         ingredients += "</ul>";
         console.log(recipe);
         html += ` <div class="row">
-          <div class="col s12 m7">
+          <div class="col s12 m4">
             <div class="card">
               <div class="card-image">
                 <img src="${image}">
-                <span class="card-title">${name}</span>
+                <span class="card-title">${recipeName}</span>
               </div>
               <div class="card-content">
                 <p>${ingredients}</p>
-                <button>Save Recipe</button>
+                <button data-reci="${i}" class="favoriteRecipe">Save Recipe</button>
               </div>
               <div class="card-action">
                 <a href="${url}">Go to Recipe</a>
@@ -66,14 +80,37 @@ function getRecipe(foodName) {
       document.querySelector(".containerRecipes").innerHTML = html;
       let buttons = document.querySelectorAll(".containerRecipes button");
       for (let button of buttons) {
-        button.addEventListener("click", saveRecipe);
+        button.addEventListener("click", function (event) {
+          let recipeIndex = event.target.dataset.reci;
+          let recipeData = data.hits[recipeIndex].recipe;
+          console.log(recipeData);
+        });
       }
     });
 }
-function saveRecipe(event) {
-  let card = event.target.closest(".row");
-  console.log(card);
-}
+
+// document.querySelector(".containerRecipes").addEventListener("click", saveFavoriteRecipe);
+
+// function saveRecipe(event){
+//   console.log(event, event.target.tagName)
+
+//   if (event.target.tagName==="BUTTON"){
+//     let element = event.target
+//     // console.log(Element);
+//     let saved = JSON.parse(localStorage.getItem("recipeName")) || []
+//     let rec = event.target.getAttribute("data-reci")
+//     saved.push(rec)
+//     localStorage.setItem("recipeName", JSON.stringify(saved));
+//     console.log(rec)
+//       let myRecipe = {
+
+//         //    image: element.closest("img").getAttribute("src"),
+//             ingredients: element.previousSibling.innerText ,
+//             // url: element.closest("a").getAttribute("href")
+//               }
+//               console.log(myRecipe);
+//   }
+// }
 
 function getNutrients(foodName) {
   var requestUrl =
@@ -126,16 +163,29 @@ function getNutrients(foodName) {
         return nutrient.nutrientName === "Protein"; //same as above just written different.
       });
 
+      displayNutrients(carb, protein, fat, sugar, calories);
+
       console.log(calories.value + " " + calories.unitName);
       console.log(sugar.value);
       console.log(protein.value + " " + protein.unitName);
 
-      //   function setLocalStorage() {
-      //     localStorage.setItem("foodName", json.stringify(foodData));
-      //     console.log(foodData)
+      //   function setFoodItemStorage(event) {
+      //     localStorage.setItem("foodName", JSON.stringify(foodData));
+      //     console.log(foodData);
       //   }
 
+      function displayNutrients(carb, protein, fat, sugar, calories) {
+        document.querySelector(
+          ".test"
+        ).innerHTML = `<p>Calories.....${calories.value} ${calories.unitName}</p>
+            <p>Protein.....${protein.value} ${protein.unitName}</p>
+            <p>Fat.....${fat.value} ${fat.unitName}</p>
+            <p>sugar.....${sugar.value} ${sugar.unitName}</p>
+            <p>carb.....${carb.value} ${carb.unitName}</p>`;
+      }
+
       getRecipe(foodName);
-      //   setLocalStorage();
+      //   setFoodItemStorage();
+      //   setRecipeStorage();
     });
 }
