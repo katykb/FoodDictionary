@@ -21,6 +21,74 @@ function openTab(tabName, elmnt, color) {
     document.getElementById(tabName).style.display = "block";
     // Add the specific color to the button used to open the tab content
     elmnt.style.backgroundColor = color;
+
+    if (tabName === "myRecipes") {
+        let savedRecipes = [];
+        if (localStorage.getItem("savedRecipes")) {
+            savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
+            var recipeContainer = document.getElementById("recipe-container");
+            // without this it keeps appending, setting it to an empty string starts the div off with only the saved local data.
+            recipeContainer.textContent = "";
+            for (let i = 0; i < savedRecipes.length; i++) {
+                // var image = savedRecipes[i].image;
+                // var label = savedRecipes[i].label;
+                // var recipeURL = savedRecipes[i].url;
+                // var ingredients = savedRecipes[i].ingredients;
+
+                // object destructuring
+                var { image, label, url, ingredients } = savedRecipes[i];
+                var recipeCard = document.createElement("div");
+                var recipeImage = document.createElement("img");
+                var recipeLabel = document.createElement("h3");
+                var recipeIngredients = document.createElement("ul");
+                var recipeLink = document.createElement("a");
+
+                recipeImage.src = image;
+                recipeLabel.textContent = label;
+                recipeLink.href = url;
+                recipeLink.innerText = "GO TO RECIPE";
+
+                recipeCard.classList.add("recipe-card");
+                recipeImage.classList.add("card-image");
+                recipeLabel.classList.add("card-title");
+                recipeIngredients.classList.add("card-content");
+                recipeLink.classList.add("card-action");
+
+                // for every ingredient in each recipe the loop runs x number of times
+                for (let j = 0; j < ingredients.length; j++) {
+                    var ingredientText = ingredients[j].text;
+                    var ingredientListItem = document.createElement("li");
+                    ingredientListItem.textContent = ingredientText;
+                    recipeIngredients.appendChild(ingredientListItem);
+                }
+
+                //         html += `
+                //   <div class="col s12 m4">
+                //     <div class="card">
+                //       <div class="card-image">
+                //         <img src="${image}">
+                //         <span class="card-title">${label}</span>
+                //       </div>
+                //       <div class="card-content">
+                //         <p>${ingredients}</p>
+                //         <button data-reci="${i}" class="favoriteRecipe">Save Recipe</button>
+                //       </div>
+                //       <div class="card-action">
+                //         <a href="${url}">Go to Recipe</a>
+                //       </div>
+                //     </div>
+                //   </div>
+                //                  `;
+
+                recipeCard.appendChild(recipeImage);
+                recipeCard.appendChild(recipeLabel);
+                recipeCard.appendChild(recipeIngredients);
+                recipeCard.appendChild(recipeLink);
+                recipeContainer.appendChild(recipeCard);
+                // recipeContainer.innerHTML = html;
+            }
+        }
+    }
 }
 // Get the element with id="defaultOpen" and click on it
 document.getElementById("defaultOpen").click();
@@ -318,13 +386,12 @@ function getNutrients(foodName) {
 }
 //moved out of the main function for more readability.
 function displayNutrients(carb, protein, fat, sugar, calories) {
-    document.querySelector(
-        ".test"
-    ).innerHTML += `<p>Calories.....${calories.value} ${calories.unitName}</p>
-        <p>Protein.....${protein.value} ${protein.unitName}</p>
-        <p>Fat.....${fat.value} ${fat.unitName}</p>
-        <p>sugar.....${sugar.value} ${sugar.unitName}</p>
-        <p>carb.....${carb.value} ${carb.unitName}</p>`; //query selector selects the table element and append a row where each column is a different nutrient value.
+    document.querySelector(".test").innerHTML;
+    // += `<p>Calories.....${calories.value} ${calories.unitName}</p>
+    //             <p>Protein.....${protein.value} ${protein.unitName}</p>
+    //             <p>Fat.....${fat.value} ${fat.unitName}</p>
+    //             <p>sugar.....${sugar.value} ${sugar.unitName}</p>
+    //             <p>carb.....${carb.value} ${carb.unitName}</p>`; //query selector selects the table element and append a row where each column is a different nutrient value.
 }
 // let findNutrient = function(nutrient) {
 //     nutrients.find(function(n) {
