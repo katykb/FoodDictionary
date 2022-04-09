@@ -126,12 +126,6 @@ function getRecipe(foodName) {
       // The inner html variables.
       let html = "";
 
-      //   console.log(data);
-      //   console.log(data.hits);
-      //   console.log(data.hits[0].recipe.calories)
-      //   console.log(data.hits[0].recipe.images.THUMBNAIL)
-      //   console.log(data.hits[0].recipe.ingredients[0])
-      //   var recipe = data.hits[""].recipe
       let indexes = [];
       for (let i = 0; i < 3; i++) {
         let index;
@@ -165,7 +159,7 @@ function getRecipe(foodName) {
                 <button data-reci="${i}" class="favoriteRecipe">Save Recipe</button>
               </div>
               <div class="card-action">
-                <a href="${url}">Go to Recipe</a>
+                <a class="black-text" href="${url}">Go to Recipe</a>
               </div>
             </div>
           </div>
@@ -314,13 +308,13 @@ function getNutrients(foodName) {
 }
 //moved out of the main function for more readability.
 function displayNutrients(carb, protein, fat, sugar, calories) {
-  document.querySelector(
-    ".test"
-  ).innerHTML += `<p>Calories.....${calories.value} ${calories.unitName}</p>
-        <p>Protein.....${protein.value} ${protein.unitName}</p>
-        <p>Fat.....${fat.value} ${fat.unitName}</p>
-        <p>sugar.....${sugar.value} ${sugar.unitName}</p>
-        <p>carb.....${carb.value} ${carb.unitName}</p>`; //query selector selects the table element and append a row where each column is a different nutrient value.
+//   document.querySelector(
+//     ".test"
+//   ).innerHTML += `<p>Calories.....${calories.value} ${calories.unitName}</p>
+//         <p>Protein.....${protein.value} ${protein.unitName}</p>
+//         <p>Fat.....${fat.value} ${fat.unitName}</p>
+//         <p>sugar.....${sugar.value} ${sugar.unitName}</p>
+//         <p>carb.....${carb.value} ${carb.unitName}</p>`; //query selector selects the table element and append a row where each column is a different nutrient value.
 }
 // let findNutrient = function(nutrient) {
 //     nutrients.find(function(n) {
