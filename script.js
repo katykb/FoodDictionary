@@ -23,6 +23,7 @@ function openTab(tabName, elmnt, color) {
     elmnt.style.backgroundColor = color;
 
     if (tabName === "myRecipes") {
+        console.log("anyhting");
         let savedRecipes = [];
         if (localStorage.getItem("savedRecipes")) {
             savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
