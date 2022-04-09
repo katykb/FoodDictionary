@@ -1,23 +1,11 @@
-let savedRecipes = [];
-if (localStorage.getItem("savedRecipes")) {
-    savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
-}
-console.log(savedRecipes);
-
-function openTab(tabName, elmnt, color) {
-    // Hide all elements with class="tabcontent" by default */
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tabcontent");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].style.display = "none";
-    }
-    // Remove the background color of all tablinks/buttons
-    tablinks = document.getElementsByClassName("tablink");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].style.backgroundColor = "";
-    }
-    // Show the specific tab content
-    document.getElementById(tabName).style.display = "block";
-    // Add the specific color to the button used to open the tab content
-    elmnt.style.backgroundColor = color;
-}
+// let savedRecipes = [];
+// if (localStorage.getItem("savedRecipes")) {
+//     savedRecipes = JSON.parse(localStorage.getItem("savedRecipes"));
+//     var recipeContainer = document.getElementById("#recipe-container");
+//     for (i = 0; i < savedRecipes.length; i++) {
+//         var recipeLink = document.createElement("a");
+//         recipeLink.innerText = savedRecipes[i].label;
+//         recipeContainer.appendChild(recipeLink);
+//     }
+// }
+// console.log(savedRecipes);
