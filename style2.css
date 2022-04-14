@@ -23,6 +23,11 @@ h1 {
     background-color: black;
     color: white;
     margin: 0;
+    height: 200px;
+}
+
+h4{
+    color: white;
 }
 
 a {
