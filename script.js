@@ -2,7 +2,7 @@ var foodName = document.getElementById("search");
 var searchBtn = document.getElementById("foodSearchButton");
 
 let storedFoodArray = [];
-recentSearches(); 
+recentSearches();
 allHistoryTable();
 
 function openTab(tabName, elmnt) {
@@ -26,7 +26,6 @@ function openTab(tabName, elmnt) {
       // without this it keeps appending, setting it to an empty string starts the div off with only the saved local data.
       recipeContainer.textContent = "";
       for (let i = 0; i < savedRecipes.length; i++) {
-      
         var { image, label, url, ingredients } = savedRecipes[i];
         var recipeCard = document.createElement("div");
         var recipeImage = document.createElement("img");
@@ -92,9 +91,7 @@ function recentSearches() {
       <td>${fat.value}${fat.unitName}</td>
             <td>${sugar.value}${sugar.unitName}</td>
                   <td>${carbs.value}${carbs.unitName}</td>
-
                         <td>${calories.value}${calories.unitName}</td>
-
       </tr>`;
     }
     document.querySelector("#recentSearches").innerHTML = html;
@@ -125,9 +122,7 @@ function allHistoryTable() {
       <td>${fat.value}${fat.unitName}</td>
             <td>${sugar.value}${sugar.unitName}</td>
                   <td>${carbs.value}${carbs.unitName}</td>
-
                         <td>${calories.value}${calories.unitName}</td>
-
       </tr>`;
     }
     document.querySelector("#histories").innerHTML = html;
@@ -206,7 +201,6 @@ function getRecipe(foodName) {
         });
       }
     });
-    
 }
 
 function saveRecipe(recipe) {
@@ -231,7 +225,7 @@ function getNutrients(foodName) {
       console.log(data);
       console.log(data.foods[0].foodNutrients);
       //this is the foodNutrients object/array maybe or an array that has objects
-      foodNutrients = data.foods[0].foodNutrients; 
+      foodNutrients = data.foods[0].foodNutrients;
 
       var sugar = foodNutrients.find(function (nutrient) {
         if (nutrient.nutrientName === "Sugars, total including NLEA") {
@@ -242,7 +236,6 @@ function getNutrients(foodName) {
       });
 
       var calories = foodNutrients.find(function (nutrient) {
-      
         if (nutrient.nutrientName === "Energy") {
           return true;
         } else {
@@ -277,7 +270,6 @@ function getNutrients(foodName) {
       console.log(sugar.value);
       console.log(protein.value + " " + protein.unitName);
 
-     
       var date = new Date(Date.now());
       var dateString = new Intl.DateTimeFormat("default", {
         month: "2-digit",
@@ -303,12 +295,9 @@ function getNutrients(foodName) {
 
       allHistoryTable();
       recentSearches();
-      
     });
 }
 //moved out of the main function for more readability.
 function displayNutrients(carb, protein, fat, sugar, calories) {
   document.querySelector(".test").innerHTML;
-  
 }
-
