@@ -17,6 +17,7 @@ function openTab(tabName, elmnt) {
   }
   document.getElementById(tabName).style.display = "block";
 
+
   if (tabName === "myRecipes") {
     console.log("anyhting");
     let savedRecipes = [];
@@ -26,37 +27,57 @@ function openTab(tabName, elmnt) {
       // without this it keeps appending, setting it to an empty string starts the div off with only the saved local data.
       recipeContainer.textContent = "";
       for (let i = 0; i < savedRecipes.length; i++) {
-        var { image, label, url, ingredients } = savedRecipes[i];
-        var recipeCard = document.createElement("div");
-        var recipeImage = document.createElement("img");
-        var recipeLabel = document.createElement("h3");
-        var recipeIngredients = document.createElement("ul");
-        var recipeLink = document.createElement("a");
-
-        recipeImage.src = image;
-        recipeLabel.textContent = label;
-        recipeLink.href = url;
-        recipeLink.innerText = "GO TO RECIPE";
-
-        recipeCard.classList.add("recipe-card");
-        recipeImage.classList.add("card-image");
-        recipeLabel.classList.add("card-title");
-        recipeIngredients.classList.add("card-content");
-        recipeLink.classList.add("card-action");
-
-        // for every ingredient in each recipe the loop runs x number of times
-        for (let j = 0; j < ingredients.length; j++) {
-          var ingredientText = ingredients[j].text;
-          var ingredientListItem = document.createElement("li");
+        
+        var ingredientListItem = document.createElement("li");
+        var ingredientText = ingredients[j].text;
+        for (let j = 0; j < ingredientsListItem.length; j++) {
           ingredientListItem.textContent = ingredientText;
           recipeIngredients.appendChild(ingredientListItem);
         }
+        ingredients += "</ul>";
+        console.log(recipe);
+        html += `
+          <div class="col s12 m4">
+            <div class="card">
+              <div class="card-image">
+                <img src="${image}">
+                <span class="card-title">${recipeName}</span>
+              </div>
+              <div class="card-content">
+                <p>${ingredients}</p>
+                <button data-reci="${i}" class="favoriteRecipe">Save Recipe</button>
+              </div>
+              <div class="card-action">
+                <a href="${url}">Go to Recipe</a>
+              </div>
+            </div>
+          </div>
+                         `;
+        // var { image, label, url, ingredients } = savedRecipes[i];
+        // var recipeCard = document.createElement("div");
+        // var recipeImage = document.createElement("img");
+        // var recipeLabel = document.createElement("h3");
+        ;
+        // var recipeLink = document.createElement("a");
 
-        recipeCard.appendChild(recipeImage);
-        recipeCard.appendChild(recipeLabel);
-        recipeCard.appendChild(recipeIngredients);
-        recipeCard.appendChild(recipeLink);
-        recipeContainer.appendChild(recipeCard);
+        // recipeImage.src = image;
+        // recipeLabel.textContent = label;
+        // recipeLink.href = url;
+        // recipeLink.innerText = "GO TO RECIPE";
+
+        // recipeCard.classList.add("recipe-card");
+        // recipeImage.classList.add("card-image");
+        // recipeLabel.classList.add("card-title");
+        // recipeIngredients.classList.add("card-content");
+        // recipeLink.classList.add("card-action");
+
+        // for every ingredient in each recipe the loop runs x number of times
+
+        // recipeCard.appendChild(recipeImage);
+        // recipeCard.appendChild(recipeLabel);
+        // recipeCard.appendChild(recipeIngredients);
+        // recipeCard.appendChild(recipeLink);
+        // recipeContainer.appendChild(recipeCard);
         // recipeContainer.innerHTML = html;
       }
     }
